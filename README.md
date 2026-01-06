@@ -45,14 +45,19 @@ satellite-imagery-property-valuation/
 │   └── 04_model_training.ipynb
 │
 ├── extrafiles/
-│   └── train_image_embeddings.npy
-|   └── train_image_ids.npy
-│   └── test_image_embeddings.npy
-|   └── test_image_ids.npy
+│   ├── train_image_embeddings.npy
+│   ├── train_image_ids.npy
+│   ├── test_image_embeddings.npy
+│   └── test_image_ids.npy
 │
-├── 24113050_final.csv
-├── 24113050_report.pdf
+├── outputs/
+│   └── 24113050_final.csv
+│
+├── reports/
+│   └── 24113050_report.pdf
+│
 └── README.md
+
 ```
 ## How to Run the Project
 
