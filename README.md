@@ -54,4 +54,97 @@ satellite-imagery-property-valuation/
 ├── 24113050_report.pdf
 └── README.md
 ```
+## How to Run the Project
+
+The project follows a sequential, notebook-based workflow. Each step depends on the outputs of the previous stage, so it is important to run the notebooks in the order listed below.
+
+---
+
+### Step 1: Tabular Data Preprocessing & EDA
+Run the preprocessing notebook first.
+
+This notebook performs the following tasks:
+- Loads the raw tabular housing dataset
+- Cleans missing and inconsistent values
+- Performs exploratory data analysis (EDA)
+- Conducts geospatial analysis using latitude and longitude
+- Engineers relevant tabular features
+- Applies log transformation to the target variable (`price_log`)
+- Prepares the dataset for image alignment and modeling
+
+This step establishes a clean and well-understood tabular foundation for the multimodal pipeline.
+
+---
+
+### Step 2: Download Satellite Images
+After preprocessing, download satellite imagery using geographic coordinates.
+
+
+This notebook:
+- Loads the cleaned tabular housing dataset
+- Uses property latitude–longitude coordinates
+- Downloads satellite imagery in **GeoTIFF format** using a remote imagery API
+- Ensures consistent image resolution and coverage
+- Aligns each downloaded satellite image with its corresponding property ID
+
+The output of this step is a structured collection of satellite images mapped directly to housing records.
+
+---
+
+### Step 3: Extract Image Embeddings
+Convert satellite images into numerical feature representations.
+
+
+This notebook:
+- Loads the downloaded GeoTIFF satellite images
+- Uses a CNN-based feature extractor
+- Converts each image into a fixed-length embedding vector
+- Separately processes training and test images
+- Saves the following files:
+  - `train_image_embeddings.npy`
+  - `train_image_ids.npy`
+  - `test_image_embeddings.npy`
+  - `test_image_ids.npy`
+
+These embeddings serve as the visual input for multimodal modeling.
+
+---
+
+### Step 4: Model Training and Evaluation
+Train baseline and multimodal models and generate final predictions.
+
+
+This notebook:
+- Loads processed tabular features and image embeddings
+- Aligns tabular rows with corresponding image embeddings using property IDs
+- Trains the following models using **Gradient Boosting Regressor**:
+  - Tabular-only model
+  - Image-only model
+  - Early fusion model
+  - Late (intermediate) fusion model
+- Evaluates all models using:
+  - RMSE (log-price)
+  - R² (log-price)
+- Trains the final selected model on the full training data
+- Generates predictions for the test dataset
+- Applies inverse log transformation to obtain real price predictions
+- Saves the final output as `submission.csv`
+
+---
+
+### Final Output
+The final prediction file is saved at:
+
+> **Important:**  
+> Each step in the pipeline depends on artifacts generated in the previous step.  
+> Skipping or reordering steps will break the workflow.
+
+---
+
+## Limitations
+
+- Satellite image features provide only modest performance gains due to the dominance of strong tabular predictors.
+- The CNN is used strictly as a fixed feature extractor; end-to-end multimodal training is not performed.
+- Image resolution and temporal misalignment between imagery and sale dates may limit fine-grained neighborhood representation.
+
 
