@@ -44,12 +44,6 @@ satellite-imagery-property-valuation/
 │   ├── 03_image_embeddings.ipynb
 │   └── 04_model_training.ipynb
 │
-├── extrafiles/
-│   ├── train_image_embeddings.npy
-│   ├── train_image_ids.npy
-│   ├── test_image_embeddings.npy
-│   └── test_image_ids.npy
-│
 ├── outputs/
 │   └── 24113050_final.csv
 │
